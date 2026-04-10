@@ -28,32 +28,49 @@ npm run build
 
 The frontend output is generated at `frontend/dist`.
 
-## Vercel deployment
+## Deploy frontend on Vercel and backend on Render
 
-This project is configured for Vercel using `vercel.json`.
+This is the recommended free split deployment:
 
-### Required environment variables
+### Frontend on Vercel
 
-Set these in the Vercel dashboard under Project Settings > Environment Variables:
+1. Create a new Vercel project and point it to the `frontend/` folder.
+2. Set the build settings if needed:
+   - Build Command: `npm install && npm run build`
+   - Output Directory: `dist`
+3. Add a Vercel environment variable:
+   - `VITE_API_BASE_URL` = `https://<your-render-service>.onrender.com/api`
+4. Deploy the frontend.
 
-- `MONGO_URI` — MongoDB connection string
-- `NODE_ENV=production`
+Vercel will serve the static React app and all API requests will go to Render.
 
-### Deploy instructions
+### Backend on Render
 
-1. Connect your Git repository to Vercel.
-2. Ensure the project root contains `package.json`, `vercel.json`, `frontend/`, `backend/`, and `api/`.
-3. Set the environment variables listed above.
-4. Trigger a deployment.
+1. Create a new Render Web Service from the `backend/` folder.
+2. Use the default environment if you want the free tier.
+3. Set the service build command:
+   - `npm install`
+4. Set the start command:
+   - `npm start`
+5. Set these environment variables in Render:
+   - `MONGO_URI` — MongoDB connection string
+   - `NODE_ENV=production`
+6. Deploy the service.
 
-### What Vercel does
+Render will provide a public URL like `https://<your-render-service>.onrender.com`.
 
-- Builds the frontend with `npm --workspace frontend run build`
-- Deploys serverless API routes from `api/index.js`
-- Routes requests under `/api/*` to the backend
-- Serves static frontend assets from `frontend/dist`
+### Frontend configuration
 
-## Alternative run mode
+The frontend now reads the API base URL from `VITE_API_BASE_URL`.
+If this variable is missing, it falls back to `http://localhost:3000/api` for local development.
+
+### Why this works
+
+- Vercel hosts the static frontend for free.
+- Render hosts the backend service for free on the free tier.
+- The frontend calls the backend via the Render public URL.
+
+## Local development
 
 If you want to run the backend locally without Vercel:
 
