@@ -1,0 +1,21 @@
+{
+  "name": "inventorymanagement",
+  "private": true,
+  "workspaces": [
+    "backend",
+    "frontend"
+  ],
+  "scripts": {
+    "dev": "concurrently \"npm --workspace backend run dev\" \"npm --workspace frontend run dev\"",
+    "build": "npm --workspace frontend run build",
+    "vercel-build": "npm --workspace frontend run build",
+    "start": "node backend/server.js",
+    "heroku-postbuild": "npm --workspace frontend install && npm --workspace frontend run build"
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  },
+  "devDependencies": {
+    "concurrently": "^9.0.0"
+  }
+}
