@@ -34,14 +34,13 @@ This is the recommended free split deployment:
 
 ### Frontend on Vercel
 
-1. Create a new Vercel project and point it to the `frontend/` folder.
-2. Set the build settings if needed:
-   - Build Command: `npm install && npm run build`
-   - Output Directory: `dist`
+1. Create a new Vercel project from this repo.
+2. Keep the repo root as the project root.
 3. Add a Vercel environment variable:
    - `VITE_API_BASE_URL` = `https://<your-render-service>.onrender.com/api`
 4. Deploy the frontend.
 
+This repo includes a root `vercel.json` that builds only the Vite frontend from `frontend/` and rewrites SPA routes to `index.html`.
 Vercel will serve the static React app and all API requests will go to Render.
 
 ### Backend on Render
@@ -63,6 +62,7 @@ Render will provide a public URL like `https://<your-render-service>.onrender.co
 
 The frontend now reads the API base URL from `VITE_API_BASE_URL`.
 If this variable is missing, it falls back to `http://localhost:3000/api` for local development.
+Use [`frontend/.env.example`](/Users/pranavgarg/Desktop/inventorymanagement/frontend/.env.example) as the template for local setup.
 
 ### Why this works
 
